@@ -4,3 +4,20 @@ server:
 spring:
   application:
     name: circuit-breaker
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        sliding-window-type: COUNT_BASED
+        minimum-number-of-calls: 1
+        sliding-window-size: 10
+        failure-rate-threshold: 15
+        wait-duration-in-open-state:
+          seconds: 1
+        permitted-number-of-calls-in-half-open-state: 1
+        record-exceptions:
+          - org.springframework.web.reactive.function.client.WebClientResponseException.InternalServerError
+        ignore-exceptions:
+          - org.springframework.web.reactive.function.client.WebClientResponseException.BadRequest
